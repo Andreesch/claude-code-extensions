@@ -24,13 +24,11 @@ command -v node >/dev/null 2>&1 || error "Node.js is required but not found. Ins
 
 # ── Resolve statusline.js (local clone or remote download) ───────────────────
 
-SCRIPT_DIR="$(cd "$(dirname "$0")" 2>/dev/null && pwd || echo "")"
-LOCAL_SRC="$SCRIPT_DIR/statusline.js"
-
 mkdir -p "$HOME/.claude/hooks"
 
-if [ -f "$LOCAL_SRC" ]; then
-  cp "$LOCAL_SRC" "$HOOK_DST"
+# Only use local file if $0 is an actual file on disk (not piped via curl | bash)
+if [ -f "$0" ] && [ -f "$(dirname "$0")/statusline.js" ]; then
+  cp "$(dirname "$0")/statusline.js" "$HOOK_DST"
   info "Copied statusline.js to $HOOK_DST"
 else
   info "Downloading statusline.js..."
