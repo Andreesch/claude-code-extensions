@@ -1,11 +1,13 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-# ── px-claude-code-tools installer ────────────────────────────────────────────
+INSTALL_URL='https://raw.githubusercontent.com/Andreesch/claude-code-extensions/main/extensions/statusline/install.sh'
 
 HOOK_SRC="$(cd "$(dirname "$0")" && pwd)/statusline.js"
 HOOK_DST="$HOME/.claude/hooks/statusline.js"
 SETTINGS="$HOME/.claude/settings.json"
+BIN_DIR="$HOME/.local/bin"
+UPDATE_CMD="$BIN_DIR/statusline-update"
 
 RED='\033[0;31m'
 GREEN='\033[0;32m'
@@ -45,7 +47,6 @@ if [ ! -f "$SETTINGS" ]; then
   ' "$SETTINGS"
   info "Created $SETTINGS with statusLine config"
 else
-  # Use node for safe JSON merge (no jq dependency)
   STATUSLINE_CMD="$STATUSLINE_CMD" node -e '
     const fs = require("fs");
     const p = process.argv[1];
@@ -57,6 +58,22 @@ else
   info "Updated statusLine in $SETTINGS"
 fi
 
+# ── Install statusline-update command ────────────────────────────────────────
+
+mkdir -p "$BIN_DIR"
+cat > "$UPDATE_CMD" <<EOF
+#!/usr/bin/env bash
+curl -fsSL '$INSTALL_URL' | bash
+EOF
+chmod +x "$UPDATE_CMD"
+info "Installed update command: statusline-update"
+
+# Warn if ~/.local/bin is not in PATH
+if [[ ":$PATH:" != *":$BIN_DIR:"* ]]; then
+  warn "~/.local/bin is not in your PATH. Add this to your shell profile:"
+  warn "  export PATH=\"\$HOME/.local/bin:\$PATH\""
+fi
+
 # ── Done ──────────────────────────────────────────────────────────────────────
 
 echo ""
@@ -64,11 +81,6 @@ info "Installation complete!"
 echo ""
 echo "  Restart Claude Code to see the new statusline."
 echo ""
-echo "  Widgets:"
-echo "    - Model name"
-echo "    - Git branch (when inside a repo)"
-echo "    - Current directory"
-echo "    - Context window usage bar"
-echo "    - Session cost"
-echo "    - Block timer with usage % (requires OAuth / Pro plan)"
+echo "  To update later, run:  statusline-update"
+echo "  (the statusline will show '⬆ statusline-update' when a new version is available)"
 echo ""

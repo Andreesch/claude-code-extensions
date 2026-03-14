@@ -199,7 +199,7 @@ function getStatuslineUpdate() {
       const age = now - Math.floor(stat.mtimeMs / 1000);
       if (age < 86400) {
         const cached = JSON.parse(fs.readFileSync(UPDATE_CACHE, 'utf8'));
-        if (cached.update_available) return '\x1b[33m\u2B06 statusline\x1b[0m \u2502 ';
+        if (cached.update_available) return '\x1b[33m\u2B06 statusline-update\x1b[0m \u2502 ';
         return '';
       }
     } catch {}
@@ -245,7 +245,7 @@ function getStatuslineUpdate() {
       fs.writeFileSync(UPDATE_CACHE, JSON.stringify({ remote: remoteVersion, update_available: updateAvailable }));
     } catch {}
 
-    return updateAvailable ? '\x1b[33m\u2B06 statusline\x1b[0m \u2502 ' : '';
+    return updateAvailable ? '\x1b[33m\u2B06 statusline-update\x1b[0m \u2502 ' : '';
   } catch { return ''; }
 }
 
