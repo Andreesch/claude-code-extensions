@@ -63,6 +63,10 @@ else
   info "Updated statusLine in $SETTINGS"
 fi
 
+# ── Clear update cache ───────────────────────────────────────────────────────
+
+rm -f "$HOME/.cache/claude-statusline/update.json" "$HOME/.cache/claude-statusline/update.lock"
+
 # ── Install statusline-update command ────────────────────────────────────────
 
 mkdir -p "$BIN_DIR"
