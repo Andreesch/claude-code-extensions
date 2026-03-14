@@ -20,7 +20,7 @@ claude-sonnet-4-6 │ main │ my-project ████░░░░░░ 38% │
 - Session cost
 - Block timer with utilization % (requires OAuth / Pro plan)
 
-**Auto-updates** — notifies you in the statusline when a new version is available (`⬆ statusline`).
+**Auto-updates** — shows `⬆ statusline-update` in yellow when a new version is available.
 
 #### Install
 
@@ -32,7 +32,11 @@ Requires Node.js. Restart Claude Code after installing.
 
 #### Update
 
-Re-run the install command above. The statusline will show `⬆ statusline` in yellow when a new version is available.
+```bash
+statusline-update
+```
+
+The `statusline-update` command is created automatically during install. The statusline will show `⬆ statusline-update` in yellow when a new version is available.
 
 ---
 
