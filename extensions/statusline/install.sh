@@ -1,9 +1,9 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-INSTALL_URL='https://raw.githubusercontent.com/Andreesch/claude-code-extensions/main/extensions/statusline/install.sh'
+BASE_URL='https://raw.githubusercontent.com/Andreesch/claude-code-extensions/main/extensions/statusline'
+INSTALL_URL="$BASE_URL/install.sh"
 
-HOOK_SRC="$(cd "$(dirname "$0")" && pwd)/statusline.js"
 HOOK_DST="$HOME/.claude/hooks/statusline.js"
 SETTINGS="$HOME/.claude/settings.json"
 BIN_DIR="$HOME/.local/bin"
@@ -22,16 +22,23 @@ error() { echo -e "${RED}[x]${NC} $1" >&2; exit 1; }
 
 command -v node >/dev/null 2>&1 || error "Node.js is required but not found. Install it first."
 
-if [ ! -f "$HOOK_SRC" ]; then
-  error "statusline.js not found at $HOOK_SRC"
-fi
+# ── Resolve statusline.js (local clone or remote download) ───────────────────
 
-# ── Install hook ──────────────────────────────────────────────────────────────
+SCRIPT_DIR="$(cd "$(dirname "$0")" 2>/dev/null && pwd || echo "")"
+LOCAL_SRC="$SCRIPT_DIR/statusline.js"
 
 mkdir -p "$HOME/.claude/hooks"
-cp "$HOOK_SRC" "$HOOK_DST"
+
+if [ -f "$LOCAL_SRC" ]; then
+  cp "$LOCAL_SRC" "$HOOK_DST"
+  info "Copied statusline.js to $HOOK_DST"
+else
+  info "Downloading statusline.js..."
+  curl -fsSL "$BASE_URL/statusline.js" -o "$HOOK_DST" || error "Failed to download statusline.js"
+  info "Downloaded statusline.js to $HOOK_DST"
+fi
+
 chmod +x "$HOOK_DST"
-info "Copied statusline.js to $HOOK_DST"
 
 # ── Update settings.json ─────────────────────────────────────────────────────
 
