@@ -22,10 +22,25 @@ claude-sonnet-4-6 │ main │ my-project ████░░░░░░ 38% │
 
 **Auto-updates** — shows `⬆ statusline-update` in yellow when a new version is available.
 
+#### What this script does
+
+Before running, you can review exactly what the install script does:
+
+```bash
+curl -fsSL https://raw.githubusercontent.com/Andreesch/claude-code-extensions/v1.1.0/extensions/statusline/install.sh | less
+```
+
+It will:
+1. Download `statusline.js` to `~/.claude/hooks/statusline.js`
+2. Add `statusLine` config to `~/.claude/settings.json`
+3. Create `~/.local/bin/statusline-update` for future updates
+
+No sudo required. No system-wide changes.
+
 #### Install
 
 ```bash
-curl -fsSL https://raw.githubusercontent.com/Andreesch/claude-code-extensions/main/extensions/statusline/install.sh | bash
+curl -fsSL https://raw.githubusercontent.com/Andreesch/claude-code-extensions/v1.1.0/extensions/statusline/install.sh | bash
 ```
 
 Requires Node.js. Restart Claude Code after installing.
@@ -36,7 +51,7 @@ Requires Node.js. Restart Claude Code after installing.
 statusline-update
 ```
 
-The `statusline-update` command is created automatically during install. The statusline will show `⬆ statusline-update` in yellow when a new version is available.
+The `statusline-update` command is created automatically during install. It always fetches the latest published release. The statusline shows `⬆ statusline-update` in yellow when a new version is available.
 
 ---
 
