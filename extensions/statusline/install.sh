@@ -74,7 +74,7 @@ mkdir -p "$BIN_DIR"
 cat > "$UPDATE_CMD" <<EOF
 #!/usr/bin/env bash
 # Fetches the latest release from GitHub and runs its install script
-LATEST=\$(curl -fsSL '$RELEASES_API' | grep -o '"tag_name":"[^"]*"' | cut -d'"' -f4)
+LATEST=\$(curl -fsSL '$RELEASES_API' | grep -o '"tag_name": *"[^"]*"' | grep -o '"[^"]*"$' | tr -d '"')
 if [ -z "\$LATEST" ]; then
   echo "Could not fetch latest release. Check your connection." >&2
   exit 1

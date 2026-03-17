@@ -8,7 +8,7 @@ const path = require('path');
 const os = require('os');
 const { execSync, spawnSync } = require('child_process');
 
-const VERSION = '1.2.0';
+const VERSION = '1.2.1';
 const UPDATE_URL = 'https://raw.githubusercontent.com/Andreesch/claude-code-extensions/main/extensions/statusline/statusline.js';
 
 const CACHE_DIR = path.join(os.homedir(), '.cache', 'claude-statusline');
